@@ -7,8 +7,8 @@ import mysql.connector
 
 def dbcon():
     return mysql.connector.connect(
-        user='root',
-        password='',
+        user='utilisateur',
+        password='mdp', 
         host='localhost',
         database='TP_Livre'
     )
@@ -383,6 +383,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                 if resultat:
                     fiche_perso_id = resultat[0][0]
+
+                    self.delete_inventaire(fiche_perso_id)
 
                     query_delete_sauvegarde = "DELETE FROM sauvegarde WHERE id_fiche_personnage = %s"
                     db_query(query_delete_sauvegarde, (fiche_perso_id,), fetch=False)

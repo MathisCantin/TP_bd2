@@ -2,7 +2,6 @@ DROP DATABASE IF EXISTS TP_Livre;
 CREATE DATABASE TP_Livre;
 USE TP_Livre;
 
-DROP TABLE IF EXISTS livre;
 CREATE TABLE livre (
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	titre VARCHAR(30),
@@ -11,7 +10,6 @@ CREATE TABLE livre (
 );
 
 #changer le DEFAULT 1 si l'on veut ajouter d'autres livres que un
-DROP TABLE IF EXISTS chapitre;
 CREATE TABLE chapitre (
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	no_chapitre INT,
@@ -20,7 +18,6 @@ CREATE TABLE chapitre (
     FOREIGN KEY (id_livre) REFERENCES livre(id)
 );
 
-DROP TABLE IF EXISTS lien_chapitre;
 CREATE TABLE lien_chapitre (
     no_chapitre_origine INT,
     no_chapitre_destination INT,
@@ -29,7 +26,6 @@ CREATE TABLE lien_chapitre (
     FOREIGN KEY (no_chapitre_destination) REFERENCES chapitre(id)
 );
 
-DROP TABLE IF EXISTS fiche_personnage;
 CREATE TABLE fiche_personnage (
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	bourse FLOAT,
@@ -37,13 +33,11 @@ CREATE TABLE fiche_personnage (
 	endurance INT
 );
 
-DROP TABLE IF EXISTS discipline_choix;
 CREATE TABLE discipline_choix (
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	titre VARCHAR(30)
 );
 
-DROP TABLE IF EXISTS discipline_kai;
 CREATE TABLE discipline_kai (
 	id_discipline INT,
 	id_fiche_personnage INT NOT NULL,
@@ -52,13 +46,11 @@ CREATE TABLE discipline_kai (
     FOREIGN KEY (id_fiche_personnage) REFERENCES fiche_personnage(id)
 );
 
-DROP TABLE IF EXISTS arme_choix;
 CREATE TABLE arme_choix (
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	titre VARCHAR(30)
 );
 
-DROP TABLE IF EXISTS arme;
 CREATE TABLE arme (
 	id_arme INT,
 	id_fiche_personnage INT NOT NULL,
@@ -67,7 +59,6 @@ CREATE TABLE arme (
     FOREIGN KEY (id_fiche_personnage) REFERENCES fiche_personnage(id)
 );
 
-DROP TABLE IF EXISTS objet;
 CREATE TABLE objet (
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	nom VARCHAR(30),
@@ -75,7 +66,6 @@ CREATE TABLE objet (
     FOREIGN KEY (id_fiche_personnage) REFERENCES fiche_personnage(id)
 );
 
-DROP TABLE IF EXISTS objet_spec;
 CREATE TABLE objet_spec (
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	nom VARCHAR(30),
@@ -83,7 +73,6 @@ CREATE TABLE objet_spec (
     FOREIGN KEY (id_fiche_personnage) REFERENCES fiche_personnage(id)
 );
 
-DROP TABLE IF EXISTS repas;
 CREATE TABLE repas (
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	nom VARCHAR(30),
@@ -91,7 +80,6 @@ CREATE TABLE repas (
     FOREIGN KEY (id_fiche_personnage) REFERENCES fiche_personnage(id)
 );
 
-DROP TABLE IF EXISTS sauvegarde;
 CREATE TABLE sauvegarde (
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	titre VARCHAR(30),
@@ -101,28 +89,21 @@ CREATE TABLE sauvegarde (
     FOREIGN KEY (id_fiche_personnage) REFERENCES fiche_personnage(id)
 );
 
-#DROP USER 'utilisateur'@'localhost';
-CREATE USER 'utilisateur'@'localhost' IDENTIFIED BY 'mdp';
+DROP USER IF EXISTS 'utilisateur';
+CREATE USER 'utilisateur' IDENTIFIED BY 'mdp';
 
-GRANT SELECT ON TP_Livre.livre TO 'utilisateur'@'localhost';
-GRANT SELECT ON TP_Livre.chapitre TO 'utilisateur'@'localhost';
-GRANT SELECT, INSERT, UPDATE, DELETE ON TP_Livre.fiche_personnage TO 'utilisateur'@'localhost';
-GRANT SELECT, INSERT, UPDATE, DELETE ON TP_Livre.discipline_choix TO 'utilisateur'@'localhost';
-GRANT SELECT, INSERT, UPDATE, DELETE ON TP_Livre.discipline_kai TO 'utilisateur'@'localhost';
-GRANT SELECT, INSERT, UPDATE, DELETE ON TP_Livre.arme_choix TO 'utilisateur'@'localhost';
-GRANT SELECT, INSERT, UPDATE, DELETE ON TP_Livre.arme TO 'utilisateur'@'localhost';
-GRANT SELECT, INSERT, UPDATE, DELETE ON TP_Livre.objet TO 'utilisateur'@'localhost';
-GRANT SELECT, INSERT, UPDATE, DELETE ON TP_Livre.objet_spec TO 'utilisateur'@'localhost';
-GRANT SELECT, INSERT, UPDATE, DELETE ON TP_Livre.repas TO 'utilisateur'@'localhost';
-GRANT SELECT, INSERT, UPDATE, DELETE ON TP_Livre.sauvegarde TO 'utilisateur'@'localhost';
-
-ALTER USER 'utilisateur'@'localhost'
-WITH
-	MAX_USER_CONNECTIONS 999
-	MAX_QUERIES_PER_HOUR 999
-	MAX_UPDATES_PER_HOUR 999
-	MAX_CONNECTIONS_PER_HOUR 999;
-
+GRANT SELECT ON TP_Livre.livre TO 'utilisateur';
+GRANT SELECT ON TP_Livre.chapitre TO 'utilisateur';
+GRANT SELECT ON TP_Livre.lien_chapitre  TO 'utilisateur';
+GRANT SELECT, INSERT, UPDATE, DELETE ON TP_Livre.fiche_personnage TO 'utilisateur';
+GRANT SELECT, INSERT, UPDATE, DELETE ON TP_Livre.discipline_choix TO 'utilisateur';
+GRANT SELECT, INSERT, UPDATE, DELETE ON TP_Livre.discipline_kai TO 'utilisateur';
+GRANT SELECT, INSERT, UPDATE, DELETE ON TP_Livre.arme_choix TO 'utilisateur';
+GRANT SELECT, INSERT, UPDATE, DELETE ON TP_Livre.arme TO 'utilisateur';
+GRANT SELECT, INSERT, UPDATE, DELETE ON TP_Livre.objet TO 'utilisateur';
+GRANT SELECT, INSERT, UPDATE, DELETE ON TP_Livre.objet_spec TO 'utilisateur';
+GRANT SELECT, INSERT, UPDATE, DELETE ON TP_Livre.repas TO 'utilisateur';
+GRANT SELECT, INSERT, UPDATE, DELETE ON TP_Livre.sauvegarde TO 'utilisateur';
 
 DELIMITER $$
 CREATE TRIGGER limite_discipline_kai
